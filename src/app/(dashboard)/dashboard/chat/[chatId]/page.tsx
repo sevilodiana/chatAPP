@@ -1,14 +1,33 @@
 import { fetchRedis } from "@/helpers/redis";
 import { authOptions } from "@/lib/auth";
-import { db } from "@/lib/db";
 import { messageArrayValidator } from "@/lib/validations/message";
 import { getServerSession } from "next-auth";
 import { notFound } from "next/navigation";
-import { FC } from "react";
-import { z } from "zod";
 import Image from "next/image";
 import Messages from "@/components/Messages";
 import ChatInput from "@/components/ChatInput";
+
+
+export async function generateMetadata({
+  params,
+}: {
+  params: { chatId: string }
+}) {
+  const session = await getServerSession(authOptions)
+  if (!session) notFound()
+  const [userId1, userId2] = params.chatId.split('--')
+  const { user } = session
+
+  const chatPartnerId = user.id === userId1 ? userId2 : userId1
+  const chatPartnerRaw = (await fetchRedis(
+    'get',
+    `user:${chatPartnerId}`
+  )) as string
+
+  const chatPartner = JSON.parse(chatPartnerRaw) as User
+
+  return { title: `chatApp | ${chatPartner.name} chat` }
+}
 
 interface PageProps {
   params: {
