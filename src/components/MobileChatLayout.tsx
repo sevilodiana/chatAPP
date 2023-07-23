@@ -13,6 +13,7 @@ import FriendRequestsSideBarOptions from "@/components/FriendRequestsSideBarOpti
 import { Session } from "next-auth";
 import { SidebarOption } from "@/types/typings";
 import { usePathname } from "next/navigation";
+import logo from "../../public/chat_bubble.svg";
 
 interface MobileChatLayoutProps {
   friends: User[];
@@ -42,7 +43,7 @@ const MobileChatLayout: FC<MobileChatLayoutProps> = ({
           href="/dashboard"
           className={buttonVariants({ variant: "ghost" })}
         >
-          <Icons.Logo className="h-6 w-auto text-sunset" />
+           <Image priority src={logo} alt="page logo" className="h-9 w-auto" />
         </Link>
         <Button onClick={() => setOpen(true)} className="gap-4">
           Menu <Menu className="h-6 w-6" />
