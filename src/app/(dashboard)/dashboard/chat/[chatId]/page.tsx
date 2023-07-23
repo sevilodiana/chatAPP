@@ -76,7 +76,9 @@ const page = async ({ params }: PageProps) => {
     "get",
     `user:${chatPartnerId}`
   )) as string;
+  
   const chatPartner = JSON.parse(chatPartnerRaw) as User;
+
   const initialMessages = await getChatMessages(chatId);
 
   return (

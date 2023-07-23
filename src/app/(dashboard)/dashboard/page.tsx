@@ -23,21 +23,20 @@ const page = async ({}) => {
         -1
       )) as string[]
 
-      //const lastMessage = JSON.parse(lastMessageRaw) as Message
-      
+      const lastMessage = lastMessageRaw ? (JSON.parse(lastMessageRaw) as Message) : false;
+    
       return {
         ...friend,
+        lastMessage,
       }
-      
     })
+    
   )
-
-  console.log("huevadaaaaaaaaa",friendsWithLastMessage)
 
   return (
     <div className='container py-12'>
-      <h1 className='font-bold text-5xl mb-8 text-petroleum'>Recent chats</h1>
-      {friendsWithLastMessage === undefined ? (
+      <h1 className='font-bold text-5xl mb-8'>Recent chats</h1>
+      {friendsWithLastMessage.length === 0 ? (
         <p className='text-sm text-zinc-500'>Nothing to show here...</p>
       ) : (
         friendsWithLastMessage.map((friend) => (
@@ -69,7 +68,12 @@ const page = async ({}) => {
               <div>
                 <h4 className='text-lg font-semibold'>{friend.name}</h4>
                 <p className='mt-1 max-w-md'>
-                
+                  <span className='text-zinc-400'>
+                    {friend.lastMessage.senderId === session.user.id
+                      ? 'You: '
+                      : ''}
+                  </span>
+                  {friend.lastMessage.text}
                 </p>
               </div>
             </Link>
