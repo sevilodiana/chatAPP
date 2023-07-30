@@ -17,7 +17,7 @@ export async function POST(req: Request) {
     const { id: idToDeny } = z.object({ id: z.string() }).parse(body);
 
     await Promise.all([
-      pusherServer.trigger(
+      await pusherServer.trigger(
         toPusherKey(`user:${idToDeny}:incoming_friend_requests`),
         "deny_friend",
         {}
